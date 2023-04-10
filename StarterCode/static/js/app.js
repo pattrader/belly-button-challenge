@@ -21,9 +21,9 @@ function build_meta_data(sample) {
     d3.json(url).then((data) => {
         let metadata = data.metadata;
         let value = metadata.filter(result => result.id == sample);
-        let valueData = value[0];
+        let filter_data = value[0];
         d3.select("#sample-metadata").html("");
-        Object.entries(valueData).forEach(([key,value]) => {
+        Object.entries(filter_data).forEach(([key,value]) => {
             d3.select("#sample-metadata").append("h5").text(`${key}: ${value}`);
         });
     });
@@ -32,17 +32,17 @@ function build_meta_data(sample) {
 function build_Chart(sample) {
     d3.json(url).then((data) => {
         let sampleInfo = data.samples;
-        let value = sampleInfo.filter(result => result.id == sample);
-        let valueData = value[0];
-        let otu_ids = valueData.otu_ids;
-        let otu_labels = valueData.otu_labels;
-        let sample_values = valueData.sample_values;
-        let yticks = otu_ids.slice(0,10).map(id => `OTU ${id}`).reverse();
-        let xticks = sample_values.slice(0,10).reverse();
+        let values = sampleInfo.filter(result => result.id == sample);
+        let filter_data = values[0];
+        let otu_ids = filter_data.otu_ids;
+        let otu_labels = filter_data.otu_labels;
+        let sample_values = filter_data.sample_values;
+        let y_data = otu_ids.slice(0,10).map(id => `OTU ${id}`).reverse();
+        let x_data = sample_values.slice(0,10).reverse();
         let labels = otu_labels.slice(0,10).reverse();
         let trace = {
-            x: xticks,
-            y: yticks,
+            x: x_data,
+            y: y_data,
             text: labels,
             type: "bar",
             orientation: "h"
